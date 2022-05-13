@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using Tracker.Business.Managers.Abstractions;
 using Tracker.Business.Models.Extentions;

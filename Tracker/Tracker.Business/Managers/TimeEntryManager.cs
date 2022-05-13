@@ -69,7 +69,7 @@ namespace Tracker.Business.Managers
 
         public IQueryable<TimeEntry> GetAllQueryableAsync()
         {
-            var timeEntry = _unitOfWork.TimeEntryRepository.GetQueryable(x => !x.IsDeleted).Include(x=>x.Project).AsQueryable();
+            var timeEntry = _unitOfWork.TimeEntryRepository.GetQueryable(x => !x.IsDeleted).Include(x => x.Project).AsQueryable();
             return timeEntry;
         }
 

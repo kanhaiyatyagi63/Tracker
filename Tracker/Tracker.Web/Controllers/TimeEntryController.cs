@@ -132,7 +132,7 @@ namespace Tracker.Web.Controllers
                 Value = x.Id,
                 Text = x.Name
             });
-            
+
             var timeEntryViewModel = await _timeEntryManager.GetAsync(id);
             if (timeEntryViewModel is null)
             {
