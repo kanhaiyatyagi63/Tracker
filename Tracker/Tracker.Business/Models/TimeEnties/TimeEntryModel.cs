@@ -7,7 +7,7 @@ namespace Tracker.Business.Models.TimeEnties
 {
     public class TimeEntryModel : Entity<int>
     {
-        [Required]
+        [Required, Display(Name = "Project")]
         public int ProjectId { get; set; }
         [Required, Display(Name = "Comments"), MaxLength(StringLengthConstants.Description)]
         public string Comments { get; set; }

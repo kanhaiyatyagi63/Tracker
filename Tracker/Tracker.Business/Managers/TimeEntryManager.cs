@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Tracker.Business.Managers.Abstractions;
 using Tracker.Business.Models.TimeEnties;
@@ -68,7 +69,7 @@ namespace Tracker.Business.Managers
 
         public IQueryable<TimeEntry> GetAllQueryableAsync()
         {
-            var timeEntry = _unitOfWork.TimeEntryRepository.GetQueryable(x => !x.IsDeleted);
+            var timeEntry = _unitOfWork.TimeEntryRepository.GetQueryable(x => !x.IsDeleted).Include(x=>x.Project).AsQueryable();
             return timeEntry;
         }
 

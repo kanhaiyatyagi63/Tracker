@@ -30,6 +30,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Project</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TimeEntry" asp-action="Index">Time Enteries</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -40,26 +43,26 @@
             @if (TempData["success"] is not null)
             {
                 <div class="alert alert-success" role="alert">
-                   @Html.Raw(TempData["success"]);
+                    @Html.Raw(TempData["success"])
                 </div>
             }
             @if (TempData["error"] is not null)
             {
                 <div class="alert alert-danger" role="alert">
-                    @Html.Raw(TempData["error"]);
+                    @Html.Raw(TempData["error"])
                 </div>
             }
 
             @if (TempData["warning"] is not null)
             {
                 <div class="alert alert-warning" role="alert">
-                    @Html.Raw(TempData["warning"]);
+                    @Html.Raw(TempData["warning"])
                 </div>
             }
             @if (TempData["default"] is not null)
             {
                 <div class="alert alert-info" role="alert">
-                     @Html.Raw(TempData["default"]);
+                    @Html.Raw(TempData["default"])
                 </div>
             }
             @RenderBody()
