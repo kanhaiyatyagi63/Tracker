@@ -10,7 +10,7 @@
     ViewData["Title"] = "Projects";
 }
 
-<h1>Welcome to the project Management</h1>
+<h1>Welcome to the Project Management</h1>
 
 <br />
 <div>
@@ -82,7 +82,9 @@
                  "orderable": false
             }],
             "columns": [
-                { "data": "name", "name": "Name", "autoWidth": true },
+                { "data": "name", "name": "Name", "autoWidth": true,
+                "render": function(data,type,full,meta){ return '<a class="btn btn-sm btn-info" href="/project/get/' + full.id + '">'+full.name+'</a>';}
+                },
                 { "data": "startDate", "name": "StartDate", "autoWidth": true },
                 { "data": "endDate", "name": "EndDate", "autoWidth": true },
                 { "data": "estimatedHours", "name": "EstimatedHours", "autoWidth": true },
@@ -91,12 +93,10 @@
                 { "data": "lifeCycleTypeView", "name": "LifeCycleModel", "autoWidth": true },
                 { "data": "createdDate", "name": "CreatedDate", "autoWidth": true },
                 {
-                    "render": function(data, type, full, meta) { return '<a class="btn btn-warning" href="/project/get/' + full.id + '">View</a>'
-                                     +'<a class="btn btn-info ml-6" href="/project/update/' + full.id + '">Edit</a>'
+                    "render": function(data, type, full, meta) { return '<a class="btn btn-success ml-6" href="/project/update/' + full.id + '">Edit</a>'
                                      +'<a class="btn btn-danger ml-6" href="/project/delete/' + full.id + '">Delete</a>'; }
                 },
             ]
-
         });
     });
 </script>
