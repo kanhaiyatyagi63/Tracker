@@ -20,6 +20,7 @@ namespace Tracker.Business.Managers
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
+
         public async Task<bool> CreateAsync(ProjectAddModel model)
         {
             try
@@ -67,13 +68,19 @@ namespace Tracker.Business.Managers
 
         public async Task<IEnumerable<ProjectViewModel>> GetAllAsync()
         {
-            var projects = await _unitOfWork.ProjectRepository.GetListAsync();
+            var projects = await _unitOfWork.ProjectRepository.GetListAsync(x => !x.IsDeleted);
             return _mapper.Map<IEnumerable<ProjectViewModel>>(projects);
+        }
+
+        public IQueryable<Project> GetAllQueryableAsync()
+        {
+            var projects = _unitOfWork.ProjectRepository.GetQueryable(x => !x.IsDeleted);
+            return projects;
         }
 
         public async Task<ProjectViewModel> GetAsync(int id)
         {
-            var project = await _unitOfWork.ProjectRepository.GetAsync(id);
+            var project = await _unitOfWork.ProjectRepository.GetAsync(x=>x.Id == x.Id && !x.IsDeleted);
             return _mapper.Map<ProjectViewModel>(project);
         }
 
@@ -84,7 +91,7 @@ namespace Tracker.Business.Managers
                 var project = _mapper.Map<Project>(model);
                 if (project == null)
                     return false;
-                var isExist = await _unitOfWork.ProjectRepository.AnyAsync(x => x.Name == project.Name && x.Id != project.Id);
+                var isExist = await _unitOfWork.ProjectRepository.AnyAsync(x => x.Name == project.Name && !x.IsDeleted && x.Id != project.Id);
                 if (isExist)
                 {
                     _logger.LogError($"Project with name {project.Name} is already exist, Unable to update project!");

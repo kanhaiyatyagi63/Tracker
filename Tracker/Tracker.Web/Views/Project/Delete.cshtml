@@ -1,5 +1,104 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ProjectViewModel
 @{
+    Layout = "_Layout";
+    ViewData["Title"] = "Delete";
+}
+
+<form asp-antiforgery="true">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="CreatedDate" />
+    <input type="hidden" asp-for="UpdatedDate" />
+    <input type="hidden" asp-for="UpdatedBy" />
+    <input type="hidden" asp-for="CreatedBy" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input readonly="readonly" asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TechnologyStack"></label>
+        <input readonly="readonly" asp-for="TechnologyStack" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="StartDate"></label>
+        <input readonly="readonly" asp-for="StartDate" class="form-control">
+        <span  asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EndDate"></label>
+        <input readonly="readonly" asp-for="EndDate" class="form-control">
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EstimatedHours"></label>
+        <input disabled="disabled" asp-for="EstimatedHours" class="form-control">
+        <span asp-validation-for="EstimatedHours" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProjectType"></label>
+        <select disabled="disabled" class="form-control" asp-for="ProjectType">
+            <option>---select---</option>
+            @if (ViewBag.ProjectType is not null)
+            {
+                foreach (var item in ViewBag.ProjectType as List<Tracker.Core.Utilities.SelectListItem<int>>)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="ProjectType" class="text-danger"></span>
+
+    </div>
+    <div class="form-group">
+        <label asp-for="ContactType"></label>
+        <select  disabled="disabled" class="form-control" asp-for="ContactType">
+            <option>---select---</option>
+            @if (ViewBag.ContactType is not null)
+            {
+                @foreach (var item in ViewBag.ContactType as List<Tracker.Core.Utilities.SelectListItem<int>>)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="ContactType" class="text-danger"></span>
+
+    </div>
+    <div class="form-group">
+        <label asp-for="LifeCycleModel"></label>
+
+        <select disabled="disabled" class="form-control" asp-for="LifeCycleModel">
+            <option>---select---</option>
+            @if (ViewBag.LifeCycleModelType is not null)
+            {
+                @foreach (var item in ViewBag.LifeCycleModelType as List<Tracker.Core.Utilities.SelectListItem<int>>)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="LifeCycleModel" class="text-danger"></span>
+
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea readonly="readonly" cols=5 asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="form-group form-check">
+        <input disabled="disabled" asp-for="IsClientBillable" type="checkbox" class="form-check-input">
+        <label asp-for="IsClientBillable" class="form-check-label"></label>
+    </div>
+    <div>
+        <a type="button" asp-action="Index" asp-controller="Project" class="btn btn-info">Back</a>
+            <button type="submit" class="btn btn-danger ml-6">Delete</button>
+
+
+    </div>
+</form>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

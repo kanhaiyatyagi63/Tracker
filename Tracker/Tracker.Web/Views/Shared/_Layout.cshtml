@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Tracker.Web</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Tracker.Web.styles.css" asp-append-version="true" />
@@ -18,13 +19,16 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                     <partial name="_LoginPartial" />
+                    <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Project</a>
                         </li>
                     </ul>
                 </div>
@@ -33,6 +37,31 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @if (TempData["success"] is not null)
+            {
+                <div class="alert alert-success" role="alert">
+                   @Html.Raw(TempData["success"]);
+                </div>
+            }
+            @if (TempData["error"] is not null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @Html.Raw(TempData["error"]);
+                </div>
+            }
+
+            @if (TempData["warning"] is not null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @Html.Raw(TempData["warning"]);
+                </div>
+            }
+            @if (TempData["default"] is not null)
+            {
+                <div class="alert alert-info" role="alert">
+                     @Html.Raw(TempData["default"]);
+                </div>
+            }
             @RenderBody()
         </main>
     </div>
@@ -45,6 +74,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
