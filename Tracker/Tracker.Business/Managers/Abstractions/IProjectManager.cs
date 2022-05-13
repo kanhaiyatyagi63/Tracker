@@ -11,5 +11,7 @@ namespace Tracker.Business.Managers.Abstractions
         Task<ProjectViewModel> GetAsync(int id);
         Task<IEnumerable<ProjectViewModel>> GetAllAsync();
         IQueryable<Project> GetAllQueryableAsync();
+
+        //Task<IEnumerable<ProjectViewModel>> GetDataTableRecordAsync();
     }
 }

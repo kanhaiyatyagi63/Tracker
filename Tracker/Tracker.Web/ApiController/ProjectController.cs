@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Tracker.Business.Managers.Abstractions;
 using System.Linq.Dynamic.Core;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
-using Tracker.Business.Models.Project;
+using Tracker.Business.Managers.Abstractions;
 using Tracker.Business.Models.Extentions;
+using Tracker.Business.Models.Project;
 
 namespace Tracker.Web.ApiController
 {
@@ -30,7 +27,7 @@ namespace Tracker.Web.ApiController
             _mapper = mapper;
         }
         [Route("GetAllProject")]
-        public async  Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync()
         {
             try
             {
@@ -59,7 +56,8 @@ namespace Tracker.Web.ApiController
                 int recordsTotal = 0;
 
                 // getting all Customer data  
-                var customerData =  _projectManager.GetAllQueryableAsync();
+                var customerData = _projectManager.GetAllQueryableAsync();
+
                 //Sorting  
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {

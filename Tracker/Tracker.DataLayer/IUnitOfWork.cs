@@ -6,5 +6,6 @@ namespace Tracker.DataLayer
     public interface IUnitOfWork : IBaseUnitOfWork
     {
         public IProjectRepository ProjectRepository { get; }
+        public ITimeEntryRepository TimeEntryRepository { get; }
     }
 }

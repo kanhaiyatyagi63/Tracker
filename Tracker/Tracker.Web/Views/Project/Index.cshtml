@@ -94,7 +94,8 @@
                 { "data": "createdDate", "name": "CreatedDate", "autoWidth": true },
                 {
                     "render": function(data, type, full, meta) { return '<a class="btn btn-success ml-6" href="/project/update/' + full.id + '">Edit</a>'
-                                     +'<a class="btn btn-danger ml-6" href="/project/delete/' + full.id + '">Delete</a>'; }
+                                     +'<a class="btn btn-danger ml-6" href="/project/delete/' + full.id + '">Delete</a>'
+                                     +'<a class="btn btn-info ml-6" href="/timeentry/create?projectId=' + full.id + '">Log Time</a>'; }
                 },
             ]
         });

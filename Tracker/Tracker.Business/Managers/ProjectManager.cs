@@ -80,7 +80,7 @@ namespace Tracker.Business.Managers
 
         public async Task<ProjectViewModel> GetAsync(int id)
         {
-            var project = await _unitOfWork.ProjectRepository.GetAsync(x=>x.Id == x.Id && !x.IsDeleted);
+            var project = await _unitOfWork.ProjectRepository.GetAsync(x => x.Id == x.Id && !x.IsDeleted);
             return _mapper.Map<ProjectViewModel>(project);
         }
 

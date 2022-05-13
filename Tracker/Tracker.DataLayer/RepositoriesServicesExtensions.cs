@@ -10,7 +10,7 @@ namespace Tracker.DataLayer
         {
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
             return services;
         }
     }

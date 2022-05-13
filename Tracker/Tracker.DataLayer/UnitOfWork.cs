@@ -11,13 +11,16 @@ namespace Tracker.DataLayer
         public UnitOfWork(
             ILogger<UnitOfWork> logger,
             DataContext dbContext,
-            IProjectRepository projectRepository)
+            IProjectRepository projectRepository,
+            ITimeEntryRepository timeEntryRepository)
         {
             _logger = logger;
             _dbContext = dbContext;
             ProjectRepository = projectRepository;
+            TimeEntryRepository = timeEntryRepository;
         }
         public IProjectRepository ProjectRepository { get; }
+        public ITimeEntryRepository TimeEntryRepository { get; }
 
         public async Task CommitAsync()
         {

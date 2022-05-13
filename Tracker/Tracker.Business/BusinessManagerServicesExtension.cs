@@ -18,7 +18,7 @@ namespace Tracker.Business
             services.AddScoped<ICommunicationManager, CommunicationManager>();
             services.AddScoped<IProjectManager, ProjectManager>();
             services.AddScoped<IEnumerationManager, EnumerationManager>();
-
+            services.AddScoped<ITimeEntryManager, TimeEntryManager>();
             return services;
         }
     }

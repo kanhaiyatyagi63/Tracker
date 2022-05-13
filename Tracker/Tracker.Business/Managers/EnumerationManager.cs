@@ -23,6 +23,11 @@ namespace Tracker.Business.Managers
             return GetEnumerationAsList(typeof(ProjectType));
         }
 
+        public List<SelectListItem<int>> GetActivityType()
+        {
+            return GetEnumerationAsList(typeof(ActivityType));
+        }
+
         private List<SelectListItem<int>> GetEnumerationAsList(Type enumType)
         {
             var list = new List<SelectListItem<int>>();

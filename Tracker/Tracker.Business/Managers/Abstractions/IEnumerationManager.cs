@@ -7,5 +7,6 @@ namespace Tracker.Business.Managers.Abstractions
         List<SelectListItem<int>> GetContractTypes();
         List<SelectListItem<int>> GetProjectType();
         List<SelectListItem<int>> GetLifeCycleModelType();
+        List<SelectListItem<int>> GetActivityType();
     }
 }

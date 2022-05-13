@@ -56,7 +56,7 @@ namespace Tracker.Web.Controllers
                 ViewBag.message = "Something went wrong!";
                 return View(model);
             }
-            TempData["success"] = "Project Created Successfully!";
+            TempData["success"] = "Project created successfully!";
             return RedirectToAction(nameof(Index));
 
         }

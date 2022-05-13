@@ -15,5 +15,6 @@ namespace Tracker.DataLayer.Entities
         public ProjectType ProjectType { get; set; }
         public LifeCycleModel LifeCycleModel { get; set; }
         public ContractType ContactType { get; set; }
+        public virtual ICollection<TimeEntry> TimeEntries { get; set; }
     }
 }
