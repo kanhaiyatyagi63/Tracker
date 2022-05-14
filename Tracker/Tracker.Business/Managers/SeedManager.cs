@@ -29,67 +29,13 @@ namespace Tracker.Business.Managers
         public async Task SeedAsync()
         {
             await SeedRolesAsync();
-            await SeedAdminUserAsync();
-            await SeedSuperAdminAsync();
+            //await SeedUser1Async();
+            //await SeedUser2Async();
+
+            await SeedAdminAsync();
         }
 
-        private async Task SeedSuperAdminAsync()
-        {
-            try
-            {
-                if (!_applicationRoleManager.Roles.Any())
-                {
-                    _logger.LogError("Admin user seed failed, no role found");
-                }
-
-                var user = await _applicationUserManager.FindByNameAsync("superadmin");
-                if (user == null)
-                {
-                    user = new ApplicationUser
-                    {
-                        Name = "superadmin",
-                        UserName = "superadmin",
-                        Email = "kanhaya.tyagi+1@successive.tech",
-                        EmailConfirmed = true,
-                        IsActive = true,
-                        PhoneCode = "+91",
-                        ApplicationRoleType = ApplicationRoleType.SuperAdmin
-                    };
-
-                    var result = await _applicationUserManager.CreateAsync(user, "Password@123");
-                    if (!result.Succeeded)
-                    {
-                        _logger.LogError("Super admin seed failed");
-                        _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
-                        return;
-                    }
-
-                    //user = await _applicationUserManager.FindByNameAsync("admin");
-                }
-
-                var isInRole = await _applicationUserManager.IsInRoleAsync(user, "SuperAdmin");
-                if (!isInRole)
-                {
-                    var result = await _applicationUserManager.AddToRoleAsync(user, "SuperAdmin");
-                    if (result.Succeeded)
-                    {
-                        _logger.LogInformation("Super admin seed completed");
-                        return;
-                    }
-
-                    _logger.LogError("Super Admin seed failed");
-                    _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
-
-                    await _applicationUserManager.DeleteAsync(user);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in super admin seeding {ex}");
-            }
-        }
-
-        private async Task SeedAdminUserAsync()
+        private async Task SeedAdminAsync()
         {
             try
             {
@@ -105,35 +51,146 @@ namespace Tracker.Business.Managers
                     {
                         Name = "admin",
                         UserName = "admin",
-                        Email = "kanhaya.tyagi+1@successive.tech",
+                        Email = "admin@tt.com",
                         EmailConfirmed = true,
                         IsActive = true,
                         PhoneCode = "+91",
                         ApplicationRoleType = ApplicationRoleType.Admin
                     };
 
-                    var result = await _applicationUserManager.CreateAsync(user, "Password@123");
+                    var result = await _applicationUserManager.CreateAsync(user, "admin@123");
                     if (!result.Succeeded)
                     {
-                        _logger.LogError("Admin user seed failed");
+                        _logger.LogError("admin seed failed");
                         _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
                         return;
                     }
 
-                    user = await _applicationUserManager.FindByNameAsync("admin");
                 }
 
-                var isInRole = await _applicationUserManager.IsInRoleAsync(user, AdminRole);
+                var isInRole = await _applicationUserManager.IsInRoleAsync(user, "Admin");
                 if (!isInRole)
                 {
-                    var result = await _applicationUserManager.AddToRoleAsync(user, AdminRole);
+                    var result = await _applicationUserManager.AddToRoleAsync(user, "Admin");
                     if (result.Succeeded)
                     {
-                        _logger.LogInformation("Admin user seed completed");
+                        _logger.LogInformation("admin seed completed");
                         return;
                     }
 
-                    _logger.LogError("Admin user seed failed");
+                    _logger.LogError("admin seed failed");
+                    _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
+
+                    await _applicationUserManager.DeleteAsync(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error in admin seeding {ex}");
+            }
+        }
+
+        private async Task SeedUser1Async()
+        {
+            try
+            {
+                if (!_applicationRoleManager.Roles.Any())
+                {
+                    _logger.LogError("Admin user seed failed, no role found");
+                }
+
+                var user = await _applicationUserManager.FindByNameAsync("admin");
+                if (user == null)
+                {
+                    user = new ApplicationUser
+                    {
+                        Name = "user1",
+                        UserName = "user1",
+                        Email = "user1@tt.com",
+                        EmailConfirmed = true,
+                        IsActive = true,
+                        PhoneCode = "+91",
+                        ApplicationRoleType = ApplicationRoleType.User
+                    };
+
+                    var result = await _applicationUserManager.CreateAsync(user, "user@123");
+                    if (!result.Succeeded)
+                    {
+                        _logger.LogError("user seed failed");
+                        _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
+                        return;
+                    }
+
+                    user = await _applicationUserManager.FindByNameAsync("user1");
+                }
+
+                var isInRole = await _applicationUserManager.IsInRoleAsync(user, "User");
+                if (!isInRole)
+                {
+                    var result = await _applicationUserManager.AddToRoleAsync(user, "User");
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("user seed completed");
+                        return;
+                    }
+
+                    _logger.LogError("user seed failed");
+                    _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
+
+                    await _applicationUserManager.DeleteAsync(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error in system user seeding {ex}");
+            }
+        }
+
+        private async Task SeedUser2Async()
+        {
+            try
+            {
+                if (!_applicationRoleManager.Roles.Any())
+                {
+                    _logger.LogError("Admin user seed failed, no role found");
+                }
+
+                var user = await _applicationUserManager.FindByNameAsync("admin");
+                if (user == null)
+                {
+                    user = new ApplicationUser
+                    {
+                        Name = "user2",
+                        UserName = "user2",
+                        Email = "user2@tt.com",
+                        EmailConfirmed = true,
+                        IsActive = true,
+                        PhoneCode = "+91",
+                        ApplicationRoleType = ApplicationRoleType.User
+                    };
+
+                    var result = await _applicationUserManager.CreateAsync(user, "user@123");
+                    if (!result.Succeeded)
+                    {
+                        _logger.LogError("user seed failed");
+                        _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
+                        return;
+                    }
+
+                    user = await _applicationUserManager.FindByNameAsync("user2");
+                }
+
+                var isInRole = await _applicationUserManager.IsInRoleAsync(user, "User");
+                if (!isInRole)
+                {
+                    var result = await _applicationUserManager.AddToRoleAsync(user, "User");
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("user seed completed");
+                        return;
+                    }
+
+                    _logger.LogError("user seed failed");
                     _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
 
                     await _applicationUserManager.DeleteAsync(user);
@@ -158,25 +215,10 @@ namespace Tracker.Business.Managers
                 },
                 new SeedApplicationRole
                 {
-                    Name = "SuperAdmin",
-                    Description = "Super administrator of System",
-                    NormalizedName = "superadmin",
-                    ApplicationRoleType = ApplicationRoleType.SuperAdmin,
-                },
-                new SeedApplicationRole
-                {
                     Name = "User",
                     Description = "User of the system",
                     NormalizedName = "user",
                     ApplicationRoleType = ApplicationRoleType.User,
-
-                },
-                 new SeedApplicationRole
-                {
-                    Name = "SystemUser",
-                    Description = "System user of the system",
-                    NormalizedName = "systemuser",
-                    ApplicationRoleType = ApplicationRoleType.System,
 
                 }
             };

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tracker.Business.Managers.Abstractions;
 using Tracker.Business.Models.TimeEnties;
@@ -6,6 +7,7 @@ using Tracker.Core.Utilities;
 
 namespace Tracker.Web.Controllers
 {
+    [Authorize]
     public class TimeEntryController : Controller
     {
         private readonly IMapper _mapper;

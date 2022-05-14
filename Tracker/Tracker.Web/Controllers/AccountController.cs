@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tracker.Business.Managers.Abstractions;
 using Tracker.DataLayer.Entities;
+using Tracker.DataLayer.Enumerations;
 using Tracker.Web.Models;
 
 namespace Tracker.Web.Controllers
@@ -9,15 +11,17 @@ namespace Tracker.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IApplicationUserManager _userManager;
+        private readonly IApplicationUserManager _applicationUserManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IMapper _mapper;
 
         public AccountController(ILogger<AccountController> logger, IMapper mapper,
-            IApplicationUserManager userManager)
+            IApplicationUserManager userManager, IApplicationUserManager applicationUserManager)
         {
             _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
+            _applicationUserManager = applicationUserManager;
         }
 
         [HttpGet]
@@ -70,7 +74,10 @@ namespace Tracker.Web.Controllers
             }
 
             var user = _mapper.Map<ApplicationUser>(userModel);
-
+            user.UserName = userModel.Name;
+            user.NormalizedUserName = userModel.Name;
+            user.PhoneCode = "+91";
+            user.ApplicationRoleType = ApplicationRoleType.User;
             var result = await _userManager.CreateAsync(user, userModel.Password);
             if (!result.Succeeded)
             {
@@ -82,6 +89,21 @@ namespace Tracker.Web.Controllers
                 return View(userModel);
             }
 
+            var isInRole = await _applicationUserManager.IsInRoleAsync(user, "User");
+            if (!isInRole)
+            {
+                var resultRole = await _applicationUserManager.AddToRoleAsync(user, "User");
+                if (!resultRole.Succeeded)
+                {
+                    _logger.LogError("user registration failed");
+                    _logger.LogError(string.Join(",", result.Errors.Select(x => x.Description)));
+
+                    await _applicationUserManager.DeleteAsync(user);
+                    return View();
+                }
+            }
+            _logger.LogInformation("user registration completed");
+            TempData["success"] = "User registered successfully!";
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 

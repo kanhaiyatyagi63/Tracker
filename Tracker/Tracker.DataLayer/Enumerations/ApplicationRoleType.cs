@@ -7,13 +7,11 @@ namespace Tracker.DataLayer.Enumerations
     {
         [Ignore]
         None = 0,
-        [Display(Name = "Super Admin")]
-        SuperAdmin = 1,
         [Display(Name = "Admin")]
-        Admin = 2,
+        Admin = 1,
         [Display(Name = "User")]
-        User = 3,
+        User = 2,
         [Display(Name = "System")]
-        System = 4
+        System = 2
     }
 }

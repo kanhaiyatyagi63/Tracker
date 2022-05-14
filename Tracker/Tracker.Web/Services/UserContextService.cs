@@ -35,5 +35,12 @@ namespace Tracker.Web.Services
             return claim.Value;
         }
 
+        public bool IsAdmin()
+        {
+            if (_httpContextAccessor.HttpContext == null || _httpContextAccessor.HttpContext.User == null)
+                return false;
+
+            return _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+        }
     }
 }

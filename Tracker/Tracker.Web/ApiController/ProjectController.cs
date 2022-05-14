@@ -7,13 +7,7 @@ using Tracker.Business.Models.Project;
 
 namespace Tracker.Web.ApiController
 {
-    public class ProjectModelPost
-    {
-        public int ProjectId { get; set; }
-    }
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProjectController : ControllerBase
+    public class ProjectController : BaseApiController
     {
         private readonly IProjectManager _projectManager;
         private readonly ILogger _logger;

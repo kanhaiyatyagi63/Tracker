@@ -1,35 +1,45 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tracker.Business.Managers.Abstractions;
 using Tracker.Business.Models.Project;
+using Tracker.Core.Services.Abstractions;
 
 namespace Tracker.Web.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly IProjectManager _projectManager;
         private readonly ILogger _logger;
         private readonly IEnumerationManager _enumerationManager;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
+
         public ProjectController(IProjectManager projectManager,
             ILogger<ProjectController> logger,
             IEnumerationManager enumerationManager,
-            IMapper mapper)
+            IMapper mapper,
+            IUserContextService userContextService)
         {
             _projectManager = projectManager;
             _logger = logger;
             _enumerationManager = enumerationManager;
             _mapper = mapper;
-
+            _userContextService = userContextService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+
+            var user = User.IsInRole("User");
+            var admin = User.IsInRole("Admin");
+
             return View();
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewBag.ProjectType = _enumerationManager.GetProjectType();
@@ -38,7 +48,7 @@ namespace Tracker.Web.Controllers
 
             return View();
         }
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProjectAddModel model)
         {
@@ -60,7 +70,7 @@ namespace Tracker.Web.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id)
         {
             ViewBag.ProjectType = _enumerationManager.GetProjectType();
@@ -79,7 +89,7 @@ namespace Tracker.Web.Controllers
             return View(_mapper.Map<ProjectEditModel>(projectViewModel));
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(ProjectEditModel model)
         {
             ViewBag.ProjectType = _enumerationManager.GetProjectType();
@@ -101,7 +111,7 @@ namespace Tracker.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             ViewBag.ProjectType = _enumerationManager.GetProjectType();
@@ -120,7 +130,7 @@ namespace Tracker.Web.Controllers
             return View(projectViewModel);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(ProjectViewModel model)
         {
             var isDeleted = await _projectManager.DeleteAsync(model.Id);

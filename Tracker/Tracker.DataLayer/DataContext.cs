@@ -23,7 +23,7 @@ namespace Tracker.DataLayer
 
             userEntity.Property(x => x.CreatedDate).HasColumnType("DATETIME");
             userEntity.Property(x => x.UpdatedDate).HasColumnType("DATETIME");
-            userEntity.Property(x => x.ApplicationRoleType).IsRequired(true).HasDefaultValue(ApplicationRoleType.SuperAdmin);
+            userEntity.Property(x => x.ApplicationRoleType).IsRequired(true).HasDefaultValue(ApplicationRoleType.Admin);
             userEntity.Property(x => x.PhoneCode).IsRequired().HasMaxLength(StringLengthConstants.PhoneCode);
 
             //Set Rules for ApplicationRole properties
@@ -31,7 +31,7 @@ namespace Tracker.DataLayer
 
             applicationRoleEntity.Property(x => x.CreatedDate).HasColumnType("DATETIME");
             applicationRoleEntity.Property(x => x.UpdatedDate).HasColumnType("DATETIME");
-            applicationRoleEntity.Property(x => x.ApplicationRoleType).IsRequired(true).HasDefaultValue(ApplicationRoleType.SuperAdmin);
+            applicationRoleEntity.Property(x => x.ApplicationRoleType).IsRequired(true).HasDefaultValue(ApplicationRoleType.Admin);
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
             base.OnModelCreating(modelBuilder);
         }

@@ -1,4 +1,5 @@
 ﻿@using System.Reflection
+@using Tracker.Core.Services.Abstractions
 @using Tracker.DataLayer.Enumerations
 @using Tracker.Web.Extensions
 @*
@@ -13,10 +14,16 @@
 <h1>Welcome to the Project Management</h1>
 
 <br />
-<div>
-    <a asp-action="create" class="btn btn-primary" asp-controller="project">New Project</a>
-</div>
 
+@inject IUserContextService userContextService;
+
+@if (userContextService.IsAdmin())
+{
+    <div>
+        <input type="hidden" value="true" id="role_id" />
+        <a asp-action="create" class="btn btn-primary" asp-controller="project">New Project</a>
+    </div>
+}
 <hr class="mt-2" />
 
 <div>
@@ -71,9 +78,14 @@
                 { "data": "lifeCycleTypeView", "name": "LifeCycleModel", "autoWidth": true },
                 { "data": "createdDate", "name": "CreatedDate", "autoWidth": true },
                 {
-                    "render": function(data, type, full, meta) { return '<a class="btn btn-success ml-6" href="/project/update/' + full.id + '">Edit</a>'
-                                     +'<a class="btn btn-danger ml-6" href="/project/delete/' + full.id + '">Delete</a>'
-                                     +'<a class="btn btn-info ml-6" href="/timeentry/create?projectId=' + full.id + '">Log Time</a>'; }
+                    "render": function(data, type, full, meta) { var tt= 
+                                            $("#role_id").val() == "true" ? 
+                                             '<a class="btn btn-success ml-6" href="/project/update/' + full.id + '">Edit</a>'+
+                                             '<a class="btn btn-danger ml-6" href="/project/delete/' + full.id + '">Delete</a>'+
+                                            '<a class="btn btn-info ml-6" href="/timeentry/create?projectId=' + full.id + '">Log Time</a>'
+                                            :  '<a class="btn btn-info ml-6" href="/timeentry/create?projectId=' + full.id + '">Log Time</a>'
+                                      return tt;
+                                      }
                 },
             ]
         });
