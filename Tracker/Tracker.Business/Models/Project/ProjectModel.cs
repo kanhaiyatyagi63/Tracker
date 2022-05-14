@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Tracker.Business.Attribute;
 using Tracker.Core.Data;
 using Tracker.Core.Models.Constants;
 using Tracker.DataLayer.Enumerations;
@@ -19,7 +20,7 @@ namespace Tracker.Business.Models.Project
         public string? TechnologyStack { get; set; }
         [Required, Display(Name = "Client Billable")]
         public bool IsClientBillable { get; set; }
-        [Required, Display(Name = "Start Date")]
+        [Required, Display(Name = "Start Date"), DateValidation]
         public DateTime StartDate { get; set; }
         [Required, Display(Name = "End Date")]
         public DateTime EndDate { get; set; }

@@ -28,4 +28,9 @@
     <ProjectReference Include="..\Tracker.DataLayer\Tracker.DataLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\datatable\css\" />
+    <Folder Include="wwwroot\lib\datatable\js\" />
+  </ItemGroup>
+
 </Project>

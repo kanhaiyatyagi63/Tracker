@@ -62,15 +62,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-  );
-});
+    pattern: "{controller=Project}/{action=Index}/{id?}");
 
 logger.LogInformation("Start Migrate");
 app.Migrate(logger);

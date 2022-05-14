@@ -11,8 +11,6 @@ namespace Tracker.Web.ApiController
     {
         private readonly IProjectManager _projectManager;
         private readonly ILogger _logger;
-        private readonly IEnumerationManager _enumerationManager;
-        private readonly IMapper _mapper;
 
         public ProjectController(IProjectManager projectManager,
             ILogger<ProjectController> logger,
@@ -21,8 +19,6 @@ namespace Tracker.Web.ApiController
         {
             _projectManager = projectManager;
             _logger = logger;
-            _enumerationManager = enumerationManager;
-            _mapper = mapper;
         }
         [Route("GetAllProject")]
         public async Task<IActionResult> GetAllAsync()
@@ -97,9 +93,11 @@ namespace Tracker.Web.ApiController
                 return new JsonResult(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                _logger.LogError($"Get error in project => GetAllAsync {ex}");
+                return new JsonResult(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = new List<string>() });
+
             }
 
         }

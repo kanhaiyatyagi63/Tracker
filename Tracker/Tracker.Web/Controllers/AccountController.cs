@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tracker.Business.Managers.Abstractions;
 using Tracker.DataLayer.Entities;
@@ -114,7 +113,7 @@ namespace Tracker.Web.Controllers
         {
             await _userManager.LogoutAsync();
 
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Project");
         }
 
         private IActionResult RedirectToLocal(string returnUrl)
@@ -122,7 +121,7 @@ namespace Tracker.Web.Controllers
             if (Url.IsLocalUrl(returnUrl))
                 return Redirect(returnUrl);
             else
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(HomeController.Index), "Project");
         }
     }
 }
