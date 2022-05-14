@@ -15,16 +15,19 @@ namespace Tracker.Web.ApiController
         private readonly ILogger _logger;
         private readonly IEnumerationManager _enumerationManager;
         private readonly IMapper _mapper;
+        private readonly IApplicationUserManager _applicationUserManager;
 
         public TimeEntryController(ITimeEntryManager timeEntryManager,
             ILogger<TimeEntryController> logger,
             IEnumerationManager enumerationManager,
-            IMapper mapper)
+            IMapper mapper, 
+            IApplicationUserManager applicationUserManager)
         {
             _timeEntryManager = timeEntryManager;
             _logger = logger;
             _enumerationManager = enumerationManager;
             _mapper = mapper;
+            _applicationUserManager = applicationUserManager;
         }
         [Route("GetAllTimEntries")]
         public async Task<IActionResult> GetAllAsync()
@@ -55,6 +58,10 @@ namespace Tracker.Web.ApiController
 
                 int recordsTotal = 0;
 
+                // extra property
+                var projectId = HttpContext.Request.Form["projectId"].FirstOrDefault();
+
+
                 // getting all Customer data  
                 var customerData = _timeEntryManager.GetAllQueryableAsync();
 
@@ -69,6 +76,10 @@ namespace Tracker.Web.ApiController
                     customerData = customerData.Where(m => m.Comments.Contains(searchValue) ||
                     m.Project.Name.Contains(searchValue) || m.Hours.ToString().Contains(searchValue));
                 }
+                if (!string.IsNullOrEmpty(projectId)) {
+
+                    customerData = customerData.Where(x => x.ProjectId == Convert.ToInt32(projectId));
+                }
 
                 //total number of rows counts   
                 recordsTotal = customerData.Count();
@@ -80,6 +91,7 @@ namespace Tracker.Web.ApiController
                     IsApproved = x.IsApproved,
                     Comments = x.Comments,
                     ActivityTypeView = x.ActivityType.GetDisplayName(),
+                    CreatedByName =  _applicationUserManager.GetUserDetail(x.CreatedBy).Result?.Name,
                     CreatedBy = x.CreatedBy,
                     CreatedDate = x.CreatedDate,
                     UpdatedBy = x.UpdatedBy,
@@ -88,7 +100,7 @@ namespace Tracker.Web.ApiController
                     LogTime = x.LogTime,
                     ProjectName = x.Project?.Name,
                     ProjectId = x.ProjectId,
-                });
+                }).ToList();
                 //Returning Json Data  
                 return new JsonResult(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 

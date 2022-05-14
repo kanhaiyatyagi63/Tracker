@@ -4,11 +4,11 @@ namespace Tracker.Web.Models
 {
     public class AuthenticateRequestModel
     {
-        [Required, Display(Name = "UserName", Prompt = "Please enter UserName")]
+        [Required, Display(Name = "Username", Prompt = "Enter username")]
         public string UserName { get; set; }
 
         [Required]
-        [DataType(DataType.Password), Display(Name = "Password", Prompt = "Please enter password")]
+        [DataType(DataType.Password), Display(Name = "Password", Prompt = "Enter password")]
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]

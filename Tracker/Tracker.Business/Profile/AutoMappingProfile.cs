@@ -11,6 +11,8 @@ namespace Tracker.Business.Profile
         public AutoMappingProfile()
         {
             CreateMap<ApplicationUser, UserModel>();
+            CreateMap<ApplicationUser, UserDetailModel>().ReverseMap();
+
             CreateMap<ApplicationRole, RoleModel>();
 
             CreateMap<Project, ProjectAddModel>().ReverseMap();
