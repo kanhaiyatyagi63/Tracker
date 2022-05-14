@@ -49,46 +49,9 @@ namespace Tracker.Web.ApiController
 
                 int recordsTotal = 0;
 
-                // getting all Customer data  
-                var customerData = _projectManager.GetAllQueryableAsync();
-
-                //Sorting  
-                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                {
-                    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
-                }
-                //Search  
-                if (!string.IsNullOrEmpty(searchValue))
-                {
-                    customerData = customerData.Where(m => m.Name == searchValue);
-                }
-
-                //total number of rows counts   
-                recordsTotal = customerData.Count();
-                //Paging   
-                var projects = customerData.Skip(skip).Take(pageSize).ToList();
-                var data = projects.Select(x => new ProjectViewModel()
-                {
-                    Id = x.Id,
-                    IsClientBillable = x.IsClientBillable,
-                    ContactType = x.ContactType,
-                    ContractTypeView = x.ContactType.GetDisplayName(),
-                    ProjectType = x.ProjectType,
-                    ProjectTypeView = x.ProjectType.GetDisplayName(),
-                    CreatedBy = x.CreatedBy,
-                    CreatedDate = x.CreatedDate,
-                    UpdatedBy = x.UpdatedBy,
-                    UpdatedDate = x.UpdatedDate,
-                    Description = x.Description,
-                    EndDate = x.EndDate,
-                    StartDate = x.StartDate,
-                    EstimatedHours = x.EstimatedHours,
-                    LifeCycleModel = x.LifeCycleModel,
-                    IsDeleted = x.IsDeleted,
-                    LifeCycleTypeView = x.LifeCycleModel.GetDisplayName(),
-                    Name = x.Name,
-                    TechnologyStack = x.TechnologyStack
-                });
+                var result = _projectManager.GetDataTableRecordAsync(sortColumn, sortColumnDirection,searchValue, recordsTotal, skip, pageSize);
+                var data = result.Item1;
+                recordsTotal = result.Item2;
                 //Returning Json Data  
                 return new JsonResult(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
 

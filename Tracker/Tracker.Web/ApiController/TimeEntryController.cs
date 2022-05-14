@@ -63,57 +63,9 @@ namespace Tracker.Web.ApiController
                 // extra property
                 var projectId = HttpContext.Request.Form["projectId"].FirstOrDefault();
 
-
-                // getting all Customer data  
-                var customerData = _timeEntryManager.GetAllQueryableAsync();
-
-                //Sorting  
-                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                {
-                    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
-                }
-                //Search  
-                if (!string.IsNullOrEmpty(searchValue))
-                {
-                    customerData = customerData.Where(m => m.Comments.Contains(searchValue) ||
-                    m.Project.Name.Contains(searchValue) || m.Hours.ToString().Contains(searchValue));
-                }
-                if (!string.IsNullOrEmpty(projectId))
-                {
-
-                    customerData = customerData.Where(x => x.ProjectId == Convert.ToInt32(projectId));
-                }
-
-                // user is admin then return all timeenteries otherwise
-                // return specific user time enteries
-                if (!_userContextService.IsAdmin())
-                {
-                    var tt = _userContextService.GetUserId();
-                    customerData = customerData.Where(x => x.CreatedBy == _userContextService.GetUserId());
-                }
-
-                //total number of rows counts   
-                recordsTotal = customerData.Count();
-                //Paging   
-                var projects = customerData.Skip(skip).Take(pageSize).ToList();
-                var data = projects.Select(x => new TimeEntryViewModel()
-                {
-                    Id = x.Id,
-                    IsApproved = x.IsApproved,
-                    Comments = x.Comments,
-                    ActivityTypeView = x.ActivityType.GetDisplayName(),
-                    CreatedByName = _applicationUserManager.GetUserDetail(x.CreatedBy).Result?.Name,
-                    CreatedBy = x.CreatedBy,
-                    CreatedDate = x.CreatedDate,
-                    UpdatedBy = x.UpdatedBy,
-                    UpdatedDate = x.UpdatedDate,
-                    Hours = x.Hours,
-                    LogTime = x.LogTime,
-                    ProjectName = x.Project?.Name,
-                    ProjectId = x.ProjectId,
-                }).ToList();
-                //Returning Json Data  
-                return new JsonResult(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+                var result = _timeEntryManager.GetDataTableRecordAsync(sortColumn, sortColumnDirection, searchValue, recordsTotal, skip, pageSize, projectId);
+                recordsTotal = result.Item2;
+                return new JsonResult(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = result.Item1 });
 
             }
             catch (Exception ex)

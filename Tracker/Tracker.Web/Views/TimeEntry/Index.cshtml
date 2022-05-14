@@ -47,11 +47,15 @@
             "serverSide": true, // for process server side
             "filter": true, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
+            "scrollX": true,
             "ajax": {
                 "url": "/api/timeentry/GetAllTimEntries",
                 "type": "POST",
                 "datatype": "json"
             },
+             "lengthMenu": [ // length menu
+             [1 ,10, 25, 50, -1],[5, 10, 25, 50, 'All'],
+            ],
             "columnDefs": [{
                 "targets": [7],
                 "visible": true,

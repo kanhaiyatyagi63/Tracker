@@ -10,6 +10,6 @@ namespace Tracker.Business.Managers.Abstractions
         Task<bool> DeleteAsync(int id);
         Task<TimeEntryViewModel> GetAsync(int id);
         Task<IEnumerable<TimeEntryViewModel>> GetAllAsync();
-        IQueryable<TimeEntry> GetAllQueryableAsync();
+        (IEnumerable<TimeEntryViewModel>, int) GetDataTableRecordAsync(string sortColumn, string sortColumnDirection, string searchValue, int recordsTotal, int skip, int pageSize, string projectId);
     }
 }

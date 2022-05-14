@@ -10,8 +10,7 @@ namespace Tracker.Business.Managers.Abstractions
         Task<bool> DeleteAsync(int id);
         Task<ProjectViewModel> GetAsync(int id);
         Task<IEnumerable<ProjectViewModel>> GetAllAsync();
-        IQueryable<Project> GetAllQueryableAsync();
-
-        //Task<IEnumerable<ProjectViewModel>> GetDataTableRecordAsync();
+        (IEnumerable<ProjectViewModel>, int) GetDataTableRecordAsync(string sortColumn, string sortColumnDirection,
+            string searchValue, int recordsTotal, int skip, int pageSize);
     }
 }

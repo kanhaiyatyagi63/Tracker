@@ -4,6 +4,8 @@ using Tracker.Business.Managers.Abstractions;
 using Tracker.Business.Models.Project;
 using Tracker.DataLayer;
 using Tracker.DataLayer.Entities;
+using Tracker.Business.Models.Extentions;
+using System.Linq.Dynamic.Core;
 
 namespace Tracker.Business.Managers
 {
@@ -72,12 +74,6 @@ namespace Tracker.Business.Managers
             return _mapper.Map<IEnumerable<ProjectViewModel>>(projects);
         }
 
-        public IQueryable<Project> GetAllQueryableAsync()
-        {
-            var projects = _unitOfWork.ProjectRepository.GetQueryable(x => !x.IsDeleted);
-            return projects;
-        }
-
         public async Task<ProjectViewModel> GetAsync(int id)
         {
             var project = await _unitOfWork.ProjectRepository.GetAsync(x => x.Id == x.Id && !x.IsDeleted);
@@ -106,6 +102,56 @@ namespace Tracker.Business.Managers
                 _logger.LogError($"Error in UpdateAsync() : {ex.ToString()}");
                 return false;
             }
+        }
+
+
+        public (IEnumerable<ProjectViewModel>, int) GetDataTableRecordAsync(string sortColumn, string sortColumnDirection,
+            string searchValue, int recordsTotal, int skip, int pageSize)
+        {
+            // getting all Customer data  
+            var projects = _unitOfWork.ProjectRepository.GetQueryable(x => !x.IsDeleted);
+
+            //Sorting  
+            if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+            {
+                projects = projects.OrderBy(sortColumn + " " + sortColumnDirection);
+            }
+            //Search  
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                projects = projects.Where(m => m.Name == searchValue);
+            }
+
+            //total number of rows counts   
+            recordsTotal = projects.Count();
+
+            //Paging   
+            var pagedProjects = projects.Skip(skip).Take(pageSize).ToList();
+
+            // selct view Model
+            var projectViewModel = pagedProjects.Select(x => new ProjectViewModel()
+            {
+                Id = x.Id,
+                IsClientBillable = x.IsClientBillable,
+                ContactType = x.ContactType,
+                ContractTypeView = x.ContactType.GetDisplayName(),
+                ProjectType = x.ProjectType,
+                ProjectTypeView = x.ProjectType.GetDisplayName(),
+                CreatedBy = x.CreatedBy,
+                CreatedDate = x.CreatedDate,
+                UpdatedBy = x.UpdatedBy,
+                UpdatedDate = x.UpdatedDate,
+                Description = x.Description,
+                EndDate = x.EndDate,
+                StartDate = x.StartDate,
+                EstimatedHours = x.EstimatedHours,
+                LifeCycleModel = x.LifeCycleModel,
+                IsDeleted = x.IsDeleted,
+                LifeCycleTypeView = x.LifeCycleModel.GetDisplayName(),
+                Name = x.Name,
+                TechnologyStack = x.TechnologyStack
+            });
+            return (projectViewModel, recordsTotal);
         }
     }
 }
