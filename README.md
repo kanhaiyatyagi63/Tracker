@@ -1,6 +1,12 @@
 # Tracker
 A sample application for time management, having server side jQuery datatable, authentication, authorization and many more.
 
+# Infornation
+```
+Credential
+username: admin
+password: admin@123
+```
 # Technology 
 1. Dot net 6
 2. HTML
